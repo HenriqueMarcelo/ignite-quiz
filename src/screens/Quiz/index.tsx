@@ -72,6 +72,8 @@ export function Quiz() {
     }
 
     setAlternativeSelected(null);
+
+    handleNextQuestion()
   }
 
   function handleStop() {
