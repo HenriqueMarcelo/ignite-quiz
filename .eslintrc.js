@@ -5,6 +5,7 @@ module.exports = {
     'prefer-template': 1,
     'react/jsx-key': 1,
     'prettier/prettier': 1,
+    'react-hooks/exhaustive-deps': 0,
     camelcase: 0,
     '@typescript-eslint/no-unused-vars': [
       'warn', // or "error"
