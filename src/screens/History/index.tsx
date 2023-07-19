@@ -9,6 +9,11 @@ import { HistoryCard, HistoryProps } from '../../components/HistoryCard'
 import { styles } from './styles'
 import { historyGetAll, historyRemove } from '../../storage/quizHistoryStorage'
 import { Loading } from '../../components/Loading'
+import Animated, {
+  Layout,
+  SlideInRight,
+  SlideOutLeft,
+} from 'react-native-reanimated'
 
 export function History() {
   const [isLoading, setIsLoading] = useState(true)
@@ -29,13 +34,14 @@ export function History() {
   }
 
   function handleRemove(id: string) {
-    Alert.alert('Remover', 'Deseja remover esse registro?', [
-      {
-        text: 'Sim',
-        onPress: () => remove(id),
-      },
-      { text: 'Não', style: 'cancel' },
-    ])
+    // Alert.alert('Remover', 'Deseja remover esse registro?', [
+    //   {
+    //     text: 'Sim',
+    //     onPress: () => remove(id),
+    //   },
+    //   { text: 'Não', style: 'cancel' },
+    // ])
+    remove(id)
   }
 
   useEffect(() => {
@@ -60,9 +66,16 @@ export function History() {
         showsVerticalScrollIndicator={false}
       >
         {history.map((item) => (
-          <TouchableOpacity key={item.id} onPress={() => handleRemove(item.id)}>
-            <HistoryCard data={item} />
-          </TouchableOpacity>
+          <Animated.View
+            key={item.id}
+            layout={Layout.springify()}
+            entering={SlideInRight}
+            exiting={SlideOutLeft}
+          >
+            <TouchableOpacity onPress={() => handleRemove(item.id)}>
+              <HistoryCard data={item} />
+            </TouchableOpacity>
+          </Animated.View>
         ))}
       </ScrollView>
     </View>
