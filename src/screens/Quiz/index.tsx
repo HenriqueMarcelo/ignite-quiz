@@ -37,6 +37,7 @@ export function Quiz() {
   function handleSkipConfirm() {
     Alert.alert('Pular', 'Deseja realmente pular a questão?', [
       { text: 'Sim', onPress: () => handleNextQuestion() },
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       { text: 'Não', onPress: () => {} },
     ])
   }
@@ -75,7 +76,7 @@ export function Quiz() {
 
     setAlternativeSelected(null)
 
-    handleNextQuestion()
+    // handleNextQuestion()
   }
 
   function handleStop() {
