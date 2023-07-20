@@ -94,6 +94,9 @@ export function History() {
                   <Trash size={32} color={THEME.COLORS.GREY_100} />
                 </Pressable>
               )}
+              renderRightActions={() => null}
+              // Para mostrar o pop up logo que arrastar
+              // onSwipeableOpen={() => handleRemove(item.id, index)}
             >
               <HistoryCard data={item} />
             </Swipeable>
