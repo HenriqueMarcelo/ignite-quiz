@@ -4,6 +4,7 @@ import { styles } from './styles'
 import {
   BlurMask,
   Canvas,
+  Circle,
   Easing,
   Path,
   Skia,
@@ -21,18 +22,22 @@ type Props = TouchableOpacityProps & {
 const CHECK_SIZE = 28
 const CHECK_STROKE = 2
 const RADIUS = (CHECK_SIZE - CHECK_STROKE) / 2
+const CENTER_CICLE = RADIUS / 2
 
 export function Option({ checked, title, ...rest }: Props) {
   const percentage = useValue(0)
+  const circle = useValue(0)
 
   const path = Skia.Path.Make()
   path.addCircle(CHECK_SIZE, CHECK_SIZE, RADIUS)
 
   useEffect(() => {
     if (checked) {
-      runTiming(percentage, 1, { duration: 700, easing: Easing.ease })
+      runTiming(percentage, 1, { duration: 500, easing: Easing.ease })
+      runTiming(circle, CENTER_CICLE, { easing: Easing.bounce })
     } else {
-      runTiming(percentage, 0, { duration: 700 })
+      runTiming(percentage, 0, { duration: 500 })
+      runTiming(circle, 0, { duration: 300 })
     }
   }, [checked])
 
@@ -60,6 +65,14 @@ export function Option({ checked, title, ...rest }: Props) {
         >
           <BlurMask blur={1} style="solid" />
         </Path>
+        <Circle
+          cx={CHECK_SIZE}
+          cy={CHECK_SIZE}
+          r={circle}
+          color={THEME.COLORS.BRAND_LIGHT}
+        >
+          <BlurMask blur={4} style="solid" />
+        </Circle>
       </Canvas>
     </TouchableOpacity>
   )
