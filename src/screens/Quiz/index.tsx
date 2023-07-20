@@ -22,12 +22,14 @@ import Animated, {
   useSharedValue,
   withSequence,
   withTiming,
+  runOnJS,
 } from 'react-native-reanimated'
 import { ProgressBar } from '../../components/ProgressBar'
 import { THEME } from '../../styles/theme'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 
-const CARD_INCLINATION = 10
+const CARD_INCLINATION = 7
+const CARD_SKIP_AREA = -200
 interface Params {
   id: string
 }
@@ -180,7 +182,10 @@ export function Quiz() {
       }
       cardPositionY.value = event.translationY
     })
-    .onEnd(() => {
+    .onEnd((event) => {
+      if (event.translationX < CARD_SKIP_AREA) {
+        runOnJS(handleSkipConfirm)()
+      }
       cardPositionX.value = withTiming(0)
       cardPositionY.value = withTiming(0)
     })
@@ -190,6 +195,12 @@ export function Quiz() {
 
     return {
       zIndex: 1,
+      opacity: interpolate(
+        cardPositionX.value,
+        [0, CARD_SKIP_AREA / 3, CARD_SKIP_AREA * 2],
+        [1, 1, 0],
+        Extrapolate.CLAMP,
+      ),
       transform: [
         { translateX: cardPositionX.value },
         { translateY: cardPositionY.value },
