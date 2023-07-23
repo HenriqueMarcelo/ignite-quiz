@@ -29,6 +29,7 @@ import { THEME } from '../../styles/theme'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import { OverlayFeedback } from '../../components/OverlayFeedback'
 import { Audio } from 'expo-av'
+import * as Haptics from 'expo-haptics'
 
 const CARD_INCLINATION = 7
 const CARD_SKIP_AREA = -200
@@ -116,11 +117,11 @@ export function Quiz() {
     if (quiz.questions[currentQuestion].correct === alternativeSelected) {
       setPoints((prevState) => prevState + 1)
 
-      await playSound(true)
+      playSound(true)
       setStatusReply(1)
       handleNextQuestion()
     } else {
-      await playSound(false)
+      playSound(false)
       setStatusReply(2)
       shakeAnimation()
     }
@@ -144,7 +145,8 @@ export function Quiz() {
     return true
   }
 
-  function shakeAnimation() {
+  async function shakeAnimation() {
+    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error)
     shake.value = withSequence(
       withTiming(3, { duration: 400, easing: Easing.bounce }),
       withTiming(0, undefined, (finished) => {
